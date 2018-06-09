@@ -10,15 +10,15 @@ var connection = mysql.createConnection({
   })
 
   connection.connect(function(err) {
-      console.log("Connected as id: " + connection.threadId)
+      console.log("Welcome to BAMAZON!")
      order()
   })
 
 function Option(name, price, stock, id) {
-this.name = name
-this.price = price
-this.stock = stock
-this.id = id
+    this.name = name
+    this.price = price
+    this.stock = stock
+    this.id = id
 }
 
 
@@ -31,18 +31,18 @@ function order() {
             type: "rawlist",
             choices: function() {
                 var choiceArray = []
-                console.log("-------------------------------------------------------------------")
-                console.log("                  All items are 1000 round boxes")
-                console.log("-------------------------------------------------------------------")
+                console.log("-----------------------------------------------------------------------------")
+                console.log("                           COST PER 1000 ROUND BOX")
+                console.log("-----------------------------------------------------------------------------")
 
                 for (var i = 0; i < results.length; i++) {
                     // choiceArray.push(results[i].product_name + " price: $" + results[i].price+  " Item ID: " + results[i].item_id)
                     var choice = new Option(results[i].product_name, results[i].price, results[i].stock_quantity, results[i].item_id)
                     choiceArray.push(choice)
-                    console.table("Item ID: " + choiceArray[i].id + " "  + choiceArray[i].name + " Ammunition " + " Price: $" + choiceArray[i].price + " Stock: "+ choiceArray[i].stock)
+                    console.table("Item ID: " + choiceArray[i].id + " | "  + choiceArray[i].name + " | Ammunition | " + " Price: $" + choiceArray[i].price + " | Stock: "+ choiceArray[i].stock) + " |"
 
                 }
-                console.log("-------------------------------------------------------------------")
+                console.log("-----------------------------------------------------------------------------")
                 return choiceArray
             },
             message: "What would you like to buy?"
@@ -65,9 +65,9 @@ function order() {
                 }
             }
             if(answer.amount > chosenItem.stock_quantity){
-                console.log("-------------------------------------------------------------------")
-                console.log("         ***** Insufficient stock, please try again. *****")
-                console.log("-------------------------------------------------------------------")
+                console.log("-----------------------------------------------------------------------------")
+                console.log("              ***** Insufficient stock, please try again. *****")
+                console.log("-----------------------------------------------------------------------------")
 
 
                 order()
@@ -82,8 +82,7 @@ function order() {
                     },
                     {
                        item_id: chosenItem.item_id
-                    }
-                    ]
+                    }]
                 )
                 console.log("Order Complete!")
                 newOrder()
@@ -112,10 +111,17 @@ function newOrder() {
 
 
 // function checkStock(z) {
-//     if(answer.amount < chosenItem.stock_quantity){
-//         console.log("Insufficient quantity, please try again.")
-//     }
-//     else {
-
-//     }
+//     var updatedStock = (chosenItem.stock_quantity - answer.amount)
+//     console.log(chosenItem.item_id)
+//     connection.query(
+//         "UPDATE products SET ? WHERE ?",
+//         [{
+//             stock_quantity: updatedStock
+//         },
+//         {
+//             item_id: chosenItem.item_id
+//         }
+//         ]
+//     )
+//     console.log("Order Complete!")
 // }
